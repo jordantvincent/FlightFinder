@@ -1,7 +1,12 @@
 package com.company;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -16,7 +21,27 @@ public class Main {
 
         driver = new ChromeDriver();
 
-        driver.get("http://www.google.com");
+        driver.get("https://www.expedia.com/Flights");
+
+
+
+        WebElement departureLocation = driver.findElement(By.id("flight-origin-flp"));
+        departureLocation.sendKeys("Atlanta Hartsfield");
+
+        WebElement destinationLocation = driver.findElement(By.id("flight-destination-flp"));
+        destinationLocation.sendKeys("Cancun");
+
+        WebElement departingDate = driver.findElement(By.id("flight-departing-flp"));
+        departingDate.sendKeys("10/12/2019");
+
+        //I am having trouble with getting the text deleted in this field in order to submit a new date
+        WebElement returnDate = driver.findElement(By.id("flight-returning-flp"));
+        returnDate.sendKeys(Keys.DELETE);
+        returnDate.clear();
+
+
+
+
     }
 
 }
