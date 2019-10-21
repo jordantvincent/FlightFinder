@@ -13,6 +13,7 @@ public class Main {
     private static WebDriver driver;
 
     public static void main(String[] args) {
+
     //CHROME DRIVER SETUP
 
     //Each of us will have a different file path so just comment out the other one while you work
@@ -29,14 +30,13 @@ public class Main {
         departureLocation.sendKeys("Atlanta Hartsfield");
 
         WebElement destinationLocation = driver.findElement(By.id("flight-destination-flp"));
-        destinationLocation.sendKeys("Cancun");
+        destinationLocation.sendKeys(" Cancun");
 
         WebElement departingDate = driver.findElement(By.id("flight-departing-flp"));
         departingDate.sendKeys("10/12/2019");
 
         //I am having trouble with getting the text deleted in this field in order to submit a new date
         WebElement returnDate = driver.findElement(By.id("flight-returning-flp"));
-        returnDate.sendKeys(Keys.DELETE);
         returnDate.clear();
 
 
