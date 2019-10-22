@@ -31,7 +31,7 @@ public class TestExpedia {
 
     @BeforeClass
     public static void setUp() {
-        System.setProperty("webdriver.chrome.driver", "../chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "../ChromeDriver/chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-single-click-autofill");
         options.addArguments("--disable-popup-blocking");
