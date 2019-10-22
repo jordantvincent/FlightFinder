@@ -31,7 +31,7 @@ public class TestExpedia {
 
     @BeforeClass
     public static void setUp() {
-        System.setProperty("webdriver.chrome.driver", "../ChromeDriver/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "../chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-single-click-autofill");
         options.addArguments("--disable-popup-blocking");
@@ -40,7 +40,7 @@ public class TestExpedia {
 
     @Test
     public void testExpediaFlightPrices() {
-        LocalDate localDate = LocalDate.of(2020, 5, 1);
+        LocalDate localDate = LocalDate.of(2020, 8, 7);
         for (String destination : listOfDestinations
         ) {
             drawDestination(destination);
@@ -49,9 +49,9 @@ public class TestExpedia {
                     flyExpedia(destination, localDate);
                     double price = getPrice();
                     System.out.printf("Departure: " + localDate+ " | Return: " + localDate.plusDays(6) + " | Price: %.2f\n", price);
-                    expedia.getListOfCheapestFlights().put(destination, price);
-
-                    localDate = localDate.plusDays(1);
+                    expedia.getListOfCheapestFlights().put(destination +
+                            " " + localDate.toString() +
+                            " " + localDate.plusDays(6).toString(), price);                    localDate = localDate.plusDays(1);
                     Assert.assertTrue(price > 0);
                 } else if (localDate.getMonth().getValue() == 8) {
                     break;
@@ -60,12 +60,15 @@ public class TestExpedia {
                     double price = getPrice();
                     Assert.assertTrue(price > 0);
                     System.out.printf("Departure: " + localDate+ " | Return: " + localDate.plusDays(6) + " | Price: %.2f\n", price);
-                    expedia.getListOfCheapestFlights().put(destination, price);
+                    expedia.getListOfCheapestFlights().put(destination +
+                            " " + localDate.toString() +
+                            " " + localDate.plusDays(6).toString(), price);
                     localDate = localDate.plusDays(1);
                 }
             }
-            localDate = LocalDate.of(2020, 5, 1);
+            localDate = LocalDate.of(2020, 8, 7);
         }
+
     }
 
     private void flyExpedia(String destination, LocalDate date) {
@@ -80,7 +83,7 @@ public class TestExpedia {
     private double getPrice() {
         WebElement cheapest = null;
         try {
-            cheapest = (new WebDriverWait(driver, 60))
+            cheapest = (new WebDriverWait(driver, 30))
                     .until(ExpectedConditions.presenceOfElementLocated(
                             By.cssSelector("a[data-omniture-rfrr*=\".Cheapest\"]")));
         } catch (TimeoutException ex) {
