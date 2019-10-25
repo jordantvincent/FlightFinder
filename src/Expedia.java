@@ -28,6 +28,7 @@ public class Expedia implements FlightData {
         driver.findElement(By.id("tab-flight-tab-hp")).click();
 /*
         // This code is ONLY unnecessary because the options are these by default when 'flights' is selected.
+        // It appears to be necessary if using FireFox... this may cause some problems.
         driver.findElement(By.id("flight-advanced-options-hp-flight")).click();
         driver.findElement(By.id("advanced-flight-nonstop-label-hp-flight")).click();
         Select flightClass = new Select(driver.findElement(By.id("flight-advanced-preferred-class-hp-flight")));

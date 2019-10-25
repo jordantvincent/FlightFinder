@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class TestExpedia {
     private static WebDriver driver;
     Expedia expedia = new Expedia(driver);
+    static LocalDate date = LocalDate.of(2020, 8, 7);
     String departingFrom = "Atlanta Hartsfield";
     ArrayList<String> listOfDestinations = new ArrayList<>() {
         {
@@ -41,44 +42,38 @@ public class TestExpedia {
 
     @Test
     public void testExpediaFlightPrices() {
-        LocalDate localDate = LocalDate.of(2020, 8, 7);
         for (String destination : listOfDestinations
         ) {
             drawDestination(destination);
-            while (localDate.getMonth().getValue() <= 8) {
-                if (localDate.getMonth().getValue() == 8 && localDate.plusDays(6).getDayOfMonth() <= 15) {
-                    flyExpedia(destination, localDate);
-                    double price = getPrice();
-                    System.out.printf("Departure: " + localDate+ " | Return: " + localDate.plusDays(6) + " | Price: %.2f\n", price);
-                    expedia.getListOfCheapestFlights().put(destination +
-                            " " + localDate.toString() +
-                            " " + localDate.plusDays(6).toString(), price);                    localDate = localDate.plusDays(1);
-                    Assert.assertTrue(price > 0);
-                } else if (localDate.getMonth().getValue() == 8) {
+            while (date.getMonth().getValue() <= 8) {
+                if (date.getMonth().getValue() == 8 && date.plusDays(6).getDayOfMonth() <= 15) {
+                    flyExpedia(destination);
+                } else if (date.getMonth().getValue() == 8) {
                     break;
                 } else {
-                    flyExpedia(destination, localDate);
-                    double price = getPrice();
-                    Assert.assertTrue(price > 0);
-                    System.out.printf("Departure: " + localDate+ " | Return: " + localDate.plusDays(6) + " | Price: %.2f\n", price);
-                    expedia.getListOfCheapestFlights().put(destination +
-                            " " + localDate.toString() +
-                            " " + localDate.plusDays(6).toString(), price);
-                    localDate = localDate.plusDays(1);
+                    flyExpedia(destination);
                 }
             }
-            localDate = LocalDate.of(2020, 8, 7);
+            resetDate();
         }
 
     }
 
-    private void flyExpedia(String destination, LocalDate date) {
+    private void flyExpedia(String destination) {
         expedia.getFlightPage();
         expedia.setFlightOptions();
         expedia.setOrigin(departingFrom);
         expedia.setDestination(destination);
         expedia.setDepartingDate(date);
         expedia.setReturningDate(date.plusDays(6));
+        double price = getPrice();
+        System.out.printf("Departure: " + date+ " | Return: " + date.plusDays(6) + " | Price: %.2f\n", price);
+        expedia.getListOfCheapestFlights().put(destination +
+                " " + date.toString() +
+                " " + date.plusDays(6).toString(), price);
+        date = date.plusDays(1);
+        Assert.assertTrue(price > 0);
+
     }
 
     private double getPrice() {
@@ -95,6 +90,10 @@ public class TestExpedia {
         Double price = Double.parseDouble(cheapest.getAttribute("data-exact-price"));
 
         return  price;
+    }
+
+    private void resetDate() {
+        date = LocalDate.of(2020, 8, 7);
     }
 
     private void drawDestination(String destination) {
@@ -120,7 +119,7 @@ public class TestExpedia {
     }
 
     @AfterClass
-    public void cleanUp() {
+    public static void cleanUp() {
         driver.quit();
     }
 }
