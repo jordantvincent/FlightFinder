@@ -13,7 +13,7 @@ public class Expedia implements FlightData {
     private HashMap<String, Double> listOfCheapestFlights = new HashMap<>();
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
-    public Expedia(WebDriver driver) {
+    Expedia(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -63,6 +63,10 @@ public class Expedia implements FlightData {
 
     @Override
     public void setReturningDate(LocalDate returningDate) {
+        returning(returningDate, formatter, driver);
+    }
+
+    static void returning(LocalDate returningDate, DateTimeFormatter formatter, WebDriver driver) {
         String returningDateText = returningDate.format(formatter);
         WebElement returning = driver.findElement(By.id("flight-returning-hp-flight"));
         returning.click();
